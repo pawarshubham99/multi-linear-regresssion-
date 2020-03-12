@@ -1,0 +1,31 @@
+startup <- read.csv("D:\\aa data science\\multi linear regression\\assignment no 5\\50_Startups.csv") 
+View(startup)
+
+attach(startup)
+startup_new<-as.data.frame(startup[,-4])
+
+startup_new <- startup[c(" Rdpend ", 'Administration', " Marketing ", "Profit ")]
+cor(startup_new)
+
+model.startup<- lm(Profit ~ . , data = startup_new)
+summary(model.startup)
+install.packages("car")
+library(car)
+influenceIndexPlot(model.startup)
+influencePlot(model.startup)
+
+startup1 <- startup_new[-c(46,47,49,50),]
+model.startup1 <- lm(Profit ~ ., data = startup1)
+summary(model.startup1)
+
+model.startup2 <- lm(log(Profit)~(Rdpend)+(Administration)+(Marketing),data = startup1)
+summary(model.startup2)
+
+model.startup3 <- lm(log(Profit)~(Rdpend)*(Rdpend)+(Administration)*(Administration) +(Marketing)*(Marketing),data = startup1)
+summary(model.startup3)
+
+avPlots(model.startup3,id.n=2,id.cex=0.7)
+
+startup4<-as.data.frame(startup1[,-2])
+model.startup4<- lm(Profit ~ . , data = startup4)
+summary(model.startup4)
